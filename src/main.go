@@ -45,7 +45,10 @@ func transferAndLogData(dst io.Writer, src io.Reader, connectionType string) {
 			//dst2 := make([]byte, hex.DecodedLen(len(data)))
 			//hex.Decode(dst2, data)
 			if len(data) < 200 {
-				fmt.Printf("%s data: %x\n", connectionType, data)
+				if false {
+					fmt.Printf("%s data: %x\n", connectionType, data)
+				}
+
 			}
 			_, writeErr := dst.Write(data)
 			if writeErr != nil {
