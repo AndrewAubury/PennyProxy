@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-
 	"net"
 	"os"
 	"time"
+
+	"github.com/fatih/color"
 )
 
 type Config struct {
@@ -43,8 +44,9 @@ func transferAndLogData(dst io.Writer, src io.Reader, connectionType string) {
 			// Log the data
 			//dst2 := make([]byte, hex.DecodedLen(len(data)))
 			//hex.Decode(dst2, data)
-
-			fmt.Printf("%s data: %x\n", connectionType, data)
+			if len(data) < 200 {
+				fmt.Printf("%s data: %x\n", connectionType, data)
+			}
 			_, writeErr := dst.Write(data)
 			if writeErr != nil {
 				fmt.Println("Write error:", writeErr)
@@ -193,9 +195,13 @@ func startHealthCheck(serverAddress string, timeout time.Duration, frequecy time
 		if currentStatus != serverIsHealthy {
 			serverIsHealthy = currentStatus
 			currentTime := time.Now()
-
-			fmt.Printf("Server health changed to %t at %s, time since last change: %s\n",
-				serverIsHealthy, currentTime.Format(time.RFC3339), currentTime.Sub(lastChange))
+			if serverIsHealthy {
+				color.Green("Server health changed to %t at %s, time since last change: %s\n",
+					serverIsHealthy, currentTime.Format(time.RFC3339), currentTime.Sub(lastChange))
+			} else {
+				color.Red("Server health changed to %t at %s, time since last change: %s\n",
+					serverIsHealthy, currentTime.Format(time.RFC3339), currentTime.Sub(lastChange))
+			}
 
 			lastChange = currentTime
 		}
