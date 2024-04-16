@@ -1,6 +1,0 @@
-{
-    "serverAddress": "213.202.230.104:25465",
-    "serverTimeout": 2,
-    "listenAddress": "0.0.0.0",
-    "listenPort": "25565"
-}
